@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/aitesting/search_product.py">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/aitesting/search_product.py" />
+              <option name="newFile" value="true" />
+              <option name="updatedContent" value="from urllib.parse import urlparse&#10;&#10;from playwright.sync_api import expect, sync_playwright&#10;&#10;&#10;def test_search_for_t_shirts():&#10;    &quot;&quot;&quot;Test searching for T-shirts on automation practice website&quot;&quot;&quot;&#10;    with sync_playwright() as playwright:&#10;        browser = playwright.chromium.launch(headless=False)&#10;        try:&#10;            page = browser.new_page()&#10;&#10;            def allow_requested_site_only(route):&#10;                &quot;&quot;&quot;Block navigation to external sites but allow all resources&quot;&quot;&quot;&#10;                hostname = urlparse(route.request.url).hostname&#10;                request_type = route.request.resource_type&#10;                # Only block document navigation to other domains&#10;                if (request_type == &quot;document&quot; and &#10;                    hostname not in {&quot;automationpractice.pl&quot;, &quot;www.automationpractice.pl&quot;}):&#10;                    route.abort()&#10;                else:&#10;                    route.continue_()&#10;&#10;            page.route(&quot;**/*&quot;, allow_requested_site_only)&#10;            page.goto(&#10;                &quot;http://www.automationpractice.pl/index.php&quot;,&#10;                wait_until=&quot;domcontentloaded&quot;,&#10;                timeout=30000,&#10;            )&#10;&#10;            assert urlparse(page.url).hostname in {&#10;                &quot;automationpractice.pl&quot;,&#10;                &quot;www.automationpractice.pl&quot;,&#10;            }, f&quot;Unexpected redirect away from the requested site: {page.url}&quot;&#10;&#10;            search = page.locator(&quot;#search_query_top&quot;)&#10;            expect(search).to_be_visible(timeout=10000)&#10;            search.fill(&quot;T-shirts&quot;)&#10;            search.press(&quot;Enter&quot;)&#10;&#10;            product = page.get_by_text(&quot;Faded Short Sleeve T-shirts&quot;, exact=True)&#10;            product.wait_for(state=&quot;visible&quot;, timeout=15000)&#10;            assert product.is_visible()&#10;            &#10;            print(&quot;✓ Test passed: T-shirts search successful&quot;)&#10;        finally:&#10;            browser.close()&#10;&#10;&#10;if __name__ == &quot;__main__&quot;:&#10;    test_search_for_t_shirts()&#10;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
